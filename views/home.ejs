@@ -1,0 +1,25 @@
+<%- include('partials/homeHeader.ejs') %>
+
+<% if(listArray.length === 0){ %>
+
+  <h1>No lists created yet!</h1>
+
+<% } %>
+
+
+<div class="main-container">
+  <% listArray.forEach(function(list){ %>
+    <a href="/lists/<%= list.name %>">
+      <div class="list-name">
+        <h1><%= list.name %></h1>
+        <form action="/delete" method="POST">
+          <button type="submit" name="deleteButton" value="<%= list._id %>"><i class="far fa-trash-alt"></i></button>
+        </form>
+        <!-- opt2 for button -->
+        <!-- <button><i class="fa fa-minus"></i></button> -->
+      </div>
+    </a>
+  <% }) %> 
+</div>
+
+<%- include('partials/footer.ejs') %>

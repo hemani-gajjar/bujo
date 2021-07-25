@@ -1,0 +1,21 @@
+<%- include('partials/newListHeader.ejs') %>
+
+<div class="container"></div>
+
+<h1>Add a New List</h1>
+<form action="/new-list" method="POST">
+  <div>
+    <label>List Name</label>
+    <input
+      type="text"
+      name="listName"
+      required
+      oninvalid="this.setCustomValidity('Add a List Name')"
+      oninput="this.setCustomValidity('')"
+    />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+<%- include('partials/footer.ejs') %>
