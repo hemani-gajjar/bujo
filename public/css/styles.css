@@ -5,39 +5,116 @@
   font-family: "Poppins", sans-serif;
 }
 
-.navbar-container {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
+body {
+  background-color: #2c2e43;
 }
 
-.navbar-container div {
-  background-color: aqua;
+/*-----------------NAVBAR-----------------*/
+
+.navbar-container {
+  background-color: #476072;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  height: 5rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.navbar-brand {
+  color: #eeeeee;
   padding: 1rem 0 1rem 5rem;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: bolder;
+  letter-spacing: 0.4rem;
 }
 
 .navbar-container ul {
-  background-color: beige;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   padding: 1rem;
+  font-size: 1.05rem;
+}
+
+@media only screen and (max-width: 1000px) and (min-width: 400px) {
+  .navbar-container {
+    grid-template-columns: 2.5fr 1fr;
+  }
+}
+
+@media only screen and (min-width: 520px) and (max-width: 800px) {
+  .navbar-container {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .navbar-brand {
+    font-size: 1.1rem;
+    padding: 1rem 0 1rem 2rem;
+    letter-spacing: 0.2rem;
+  }
+
+  .navbar-container ul {
+    font-size: 0.9rem;
+  }
+}
+
+@media only screen and (max-width: 520px) {
+  .navbar-container {
+    grid-template-columns: 1.1fr 1fr;
+  }
+
+  .navbar-brand {
+    font-size: 1rem;
+    padding: 1rem 0 1rem 2rem;
+    letter-spacing: 0.1rem;
+  }
+
+  .navbar-container ul {
+    font-size: 0.7rem;
+  }
 }
 
 .navbar-container ul li a {
   list-style: none;
   text-decoration: none;
+  color: #eeeeee;
+  letter-spacing: 0.1rem;
+  position: relative;
 }
 
 .navbar-container ul li {
   list-style: none;
 }
 
+.navbar-container a {
+  text-decoration: none;
+}
+
+/* ---------Underline over Hover animation------- */
+.navbar-container ul li a:after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  background: #eeeeee;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+}
+.navbar-container ul li a:hover:after {
+  width: 100%;
+  left: 0;
+}
+
+/*-----------------MAIN-CONTAINER-----------------*/
+
 .main-container {
   margin: 1rem;
   height: 100%;
   display: grid;
   grid-template-columns: repeat(5, minmax(200px, 1fr));
-  grid-auto-rows: 200px;
+  grid-auto-rows: 100px;
   gap: 1rem;
 }
 
@@ -48,14 +125,471 @@
 }
 
 .main-container a {
-  background-color: lightgrey;
+  background-color: #548ca8;
   text-align: center;
   text-decoration: none;
-  color: black;
+  color: #2c2e43;
   border-radius: 10px;
 }
 
+.list-name form {
+  text-align: right;
+  margin-top: 1rem;
+  padding-right: 1rem;
+}
+/* ---------Delete Button Hover Animation----------- */
+
+.delButton {
+  display: none;
+  border: none;
+  background: transparent;
+  color: #384c5a;
+}
+
+.delButton:hover {
+  color: #0e1418;
+  transform: scale(1.15);
+}
+
+.main-container a:hover .delButton {
+  display: inline-block;
+}
+
 .main-container a:hover {
-  background-color: darkgrey;
+  background-color: #45758d;
   transition: all 0.01s ease-out;
+}
+
+@media only screen and (max-width: 1200px) and (min-width: 800px) {
+  .main-container h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .main-container h1 {
+    font-size: 1.7rem;
+  }
+
+  .main-container {
+    grid-auto-rows: 90px;
+  }
+}
+
+/* -------------------LIST-PAGE------------------- */
+
+.no-lists-line {
+  color: #eeeeee;
+  font-size: 1.5rem;
+  letter-spacing: 0.1rem;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.no-lists-div {
+  height: 70vh;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.no-lists-line strong {
+  color: #7da9c9;
+}
+
+.list-title {
+  color: #7da9c9;
+  margin: 1rem;
+}
+
+.list-title-container {
+  text-align: center;
+}
+
+.entry-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 0 10rem;
+}
+
+.entry-card {
+  display: grid;
+  grid-template-columns: 12fr 1fr;
+  grid-auto-rows: 100px;
+  align-items: center;
+  background-color: #414361;
+  margin: 0.5rem;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.entry-card h1 {
+  padding: 0 2rem;
+  font-size: 1.8rem;
+  color: #eeeeee;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+.entry-card p {
+  padding-left: 2rem;
+  font-size: 1rem;
+  color: #aaaaaa;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  text-overflow: ellipsis;
+}
+
+.entry-container a {
+  text-decoration: none;
+}
+
+.entry-card:hover {
+  background-color: #333550;
+  transition: all 0.01s ease-out;
+}
+
+.listDelButton {
+  display: none;
+  border: none;
+  background: transparent;
+  color: #aaaaaa;
+}
+
+.listDelButton:hover {
+  color: #ffffff;
+  transform: scale(1.15);
+}
+
+.entry-container a:hover .listDelButton {
+  display: inline-block;
+}
+
+@media only screen and (max-width: 1300px) {
+  .entry-container {
+    grid-template-columns: repeat(1, minmax(200px, 1fr));
+    padding: 0 7rem;
+  }
+  .entry-card h1 {
+    font-size: 1.6rem;
+    max-width: 700px;
+  }
+
+  .entry-card p {
+    font-size: 0.8rem;
+    max-width: 700px;
+  }
+}
+
+@media only screen and (max-width: 1030px) {
+  .entry-card h1 {
+    font-size: 1.6rem;
+    max-width: 500px;
+  }
+
+  .entry-card p {
+    font-size: 0.8rem;
+    max-width: 500px;
+  }
+}
+
+@media only screen and (max-width: 830px) {
+  .entry-container {
+    padding: 0 4rem;
+  }
+
+  .entry-card {
+    grid-auto-rows: 130px;
+  }
+
+  .content-container {
+    max-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .entry-card h1 {
+    font-size: 1.6rem;
+    max-width: 300px;
+  }
+
+  .entry-card p {
+    font-size: 0.8rem;
+    max-width: 300px;
+  }
+
+  .listDelButton {
+    padding-right: 1rem;
+  }
+}
+
+@media only screen and (max-width: 630px) {
+  .entry-container {
+    padding: 0 2rem;
+  }
+
+  .entry-card {
+    grid-auto-rows: 130px;
+  }
+
+  .content-container {
+    max-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .entry-card h1 {
+    font-size: 1.6rem;
+    max-width: 200px;
+  }
+
+  .entry-card p {
+    font-size: 0.8rem;
+    max-width: 200px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .entry-card {
+    grid-auto-rows: 120px;
+  }
+
+  .content-container {
+    max-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .entry-card h1 {
+    font-size: 1.6rem;
+    max-width: 150px;
+  }
+
+  .entry-card p {
+    font-size: 0.8rem;
+    max-width: 160px;
+  }
+
+  .listDelButton {
+    padding-right: 1.4rem;
+  }
+}
+
+/* ----------- New-List Form ----------- */
+
+.new-list-form-container {
+  width: 100%;
+  height: 50vh;
+  text-align: center;
+  padding: 5rem;
+  color: #eeeeee;
+}
+.new-list-form {
+  padding: 3rem;
+  font-size: 1.5rem;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.new-list-btn {
+  border: none;
+  margin-left: 1rem;
+  height: 2.5rem;
+  width: 6rem;
+  font-weight: bolder;
+  font-size: 1rem;
+  background-color: #476072;
+  color: #eeeeee;
+}
+
+.new-list-btn:hover {
+  transform: scale(1.02);
+  background-color: #384d5c;
+}
+
+.new-list-form input {
+  height: 2.5rem;
+  width: 15rem;
+  outline: 0;
+  padding-left: 1rem;
+  font-weight: bolder;
+  font-size: 1.3rem;
+  margin-left: 0.6rem;
+}
+
+@media only screen and (max-width: 800px) {
+  .new-list-form-container {
+    padding: 3rem;
+    font-size: 1rem;
+  }
+
+  .new-list-form-container h1 {
+    font-size: 1.6rem;
+  }
+
+  .new-list-form {
+    flex-direction: column;
+  }
+
+  .new-list-btn {
+    margin-top: 1rem;
+  }
+}
+
+/* ----------- New-Entry Form ----------- */
+
+.compose-container {
+  width: 100%;
+  text-align: center;
+  padding: 5rem;
+  color: #eeeeee;
+}
+
+.compose-form {
+  text-align: left;
+  font-size: 1.5rem;
+  margin: auto;
+}
+
+.compose-btn {
+  margin: 0.5rem;
+  border: none;
+  height: 3rem;
+  width: 10rem;
+  font-weight: bolder;
+  font-size: 1rem;
+  background-color: #476072;
+  color: #eeeeee;
+}
+
+.compose-btn:hover {
+  transform: scale(1.02);
+  background-color: #384d5c;
+}
+
+.compose-form input {
+  height: 2.5rem;
+  width: 100%;
+  outline: 0;
+  padding-left: 1rem;
+  font-weight: bolder;
+  font-size: 1.3rem;
+  margin-left: 0.6rem;
+}
+
+.compose-form textarea {
+  width: 100%;
+  outline: 0;
+  padding: 0.5rem 0 0 1rem;
+  font-size: 1rem;
+  margin-left: 0.6rem;
+}
+
+.compose-form-container {
+  width: 50vw;
+  margin: 3rem auto;
+}
+
+.compose-form h4 {
+  margin: 0.5rem;
+}
+
+@media only screen and (max-width: 1100px) {
+  .compose-form-container {
+    width: 60vw;
+    margin: 2rem auto;
+  }
+
+  .compose-container {
+    padding: 3rem;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .compose-form-container {
+    width: 70vw;
+    margin: 2rem auto;
+  }
+
+  .compose-container {
+    padding: 2rem;
+  }
+
+  .compose-container h1 {
+    font-size: 1.5rem;
+  }
+  .compose-form input {
+    height: 2rem;
+    padding-left: 0.7rem;
+    font-weight: bolder;
+    font-size: 1rem;
+    margin-left: 0.3rem;
+  }
+
+  .compose-form textarea {
+    padding: 0.5rem 0 0 1rem;
+    font-size: 1rem;
+    margin-left: 0.3rem;
+  }
+
+  .compose-form h4 {
+    margin: 0.3rem;
+  }
+}
+
+/*------------------- Entry-Page-------------------- */
+
+.entry-page {
+  padding: 2rem 5rem 0 5rem;
+  color: #eeeeee;
+}
+
+.entry-page p {
+  padding-top: 1rem;
+  color: #aaaaaa;
+  font-size: 1.2rem;
+  overflow-wrap: break-word;
+}
+
+@media only screen and (max-width: 600px) {
+  .entry-page {
+    padding: 1.2rem 3rem 0 3rem;
+  }
+
+  .entry-page p {
+    padding-top: 0.8rem;
+    font-size: 1rem;
+    overflow-wrap: break-word;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .entry-page {
+    padding: 1rem 2rem 0 2rem;
+  }
+
+  .entry-page h1 {
+    font-size: 1.6rem;
+  }
+
+  .entry-page p {
+    padding-top: 0.4rem;
+    font-size: 1rem;
+    overflow-wrap: break-word;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .delButton {
+    display: inline-block;
+  }
+
+  .listDelButton {
+    display: inline-block;
+  }
 }

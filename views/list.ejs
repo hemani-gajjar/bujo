@@ -1,25 +1,36 @@
 <%- include('partials/listHeader.ejs') %>
 
-      <div class="container"></div>
-      
-      <div class="entry">
+      <div">
         <% if(foundList.entries.length === 0){ %>
 
-            <h1>No entries in the list yet!</h1>
+          <div class="no-lists-div">
+            <p class="no-lists-line">No entries in the list <strong><%= listName %></strong> yet!</p>
+          </div>
 
-        <% } %>
+        <% } else { %>
+      <div class="list-title-container">
+        <h1 class="list-title"><%= listName %></h1>
+      </div>
+      <div class="entry-container">
         <% foundList.entries.forEach(function(entry){ %>
             <a href="/lists/<%= listName %>/<%= entry._id %>">
-              <div>
-                <h1><%= entry.title %></h1>
-                <p><%= entry.content.substring(0,100) %>...</p>
+              <div class="entry-card">
+                <div>
+                  <h1><%= entry.title %></h1>
+                  <div class="content-container">
+                    <p><%= entry.content.substring(0,100) %></p>
+                  </div>
+                </div>
                 <form action="/lists/<%= listName %>/delete" method="POST">
-                  <button type="submit" name="listDeleteButton" value="<%= entry._id %>"><i class="far fa-trash-alt"></i></button>
+                  <button type="submit" name="listDeleteButton" value="<%= entry._id %>" class="listDelButton"><i class="far fa-trash-alt"></i></button>
                 </form>
               </div>
             </a>
           <% }) %> 
+        </div>
       </div>
 
+      <% } %>
+
  
-      <%- include('partials/footer.ejs') %>
+<%- include('partials/footer.ejs') %>

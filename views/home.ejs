@@ -2,9 +2,11 @@
 
 <% if(listArray.length === 0){ %>
 
-  <h1>No lists created yet!</h1>
+  <div class="no-lists-div">
+    <p class="no-lists-line">No lists created yet!</p>
+  </div>
 
-<% } %>
+<% } else { %>
 
 
 <div class="main-container">
@@ -13,7 +15,7 @@
       <div class="list-name">
         <h1><%= list.name %></h1>
         <form action="/delete" method="POST">
-          <button type="submit" name="deleteButton" value="<%= list._id %>"><i class="far fa-trash-alt"></i></button>
+          <button type="submit" name="deleteButton" value="<%= list._id %>" class="delButton"><i class="far fa-trash-alt"></i></button>
         </form>
         <!-- opt2 for button -->
         <!-- <button><i class="fa fa-minus"></i></button> -->
@@ -21,5 +23,7 @@
     </a>
   <% }) %> 
 </div>
+
+<% } %>
 
 <%- include('partials/footer.ejs') %>
