@@ -595,9 +595,15 @@ body {
 }
 
 /*--------------------- LOGIN PAGE---------------------- */
+.login-container {
+}
 .login-container h1 {
   color: #eeeeee;
   padding-bottom: 0.7rem;
+}
+
+.login-body {
+  background-color: #476072;
 }
 
 .google-card a {
