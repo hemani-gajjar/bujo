@@ -651,7 +651,7 @@ body {
 
 .jumbotron {
   height: 70vh;
-  background-color: #c0d5e6;
+  background-color: #cae3f8;
 }
 
 .display-3 {
@@ -660,7 +660,7 @@ body {
 
 @media only screen and (max-width: 990px) {
   .jumbotron {
-    height: 70vh;
+    height: 60vh;
   }
   .display-3 {
     margin-top: 4rem;
