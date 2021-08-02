@@ -59,7 +59,7 @@ body {
 
 @media only screen and (max-width: 520px) {
   .navbar-container {
-    grid-template-columns: 1.1fr 1fr;
+    grid-template-columns: 0.8fr 1fr;
   }
 
   .navbar-brand {
