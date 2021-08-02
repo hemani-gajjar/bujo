@@ -593,3 +593,14 @@ body {
     display: inline-block;
   }
 }
+
+/*--------------------- LOGIN PAGE---------------------- */
+.login-container h1 {
+  color: #eeeeee;
+  padding-bottom: 0.7rem;
+}
+
+.google-card a {
+  color: #2c2e43;
+  font-weight: bolder;
+}
