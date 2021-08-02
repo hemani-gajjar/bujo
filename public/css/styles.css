@@ -601,9 +601,6 @@ body {
   padding: 0.2rem 0.6rem;
 }
 
-.login-container {
-}
-
 .login-body {
   background-color: #2c2e43;
 }
@@ -645,9 +642,27 @@ body {
 /* ------------------ FIRST PAGE----------------- */
 
 .first-container {
-  background-color: #548ca8;
+  text-align: center;
 }
 
 .first-container p {
   font-weight: bold;
+}
+
+.jumbotron {
+  height: 70vh;
+  background-color: #c0d5e6;
+}
+
+.display-3 {
+  margin-top: 6rem;
+}
+
+@media only screen and (max-width: 990px) {
+  .jumbotron {
+    height: 70vh;
+  }
+  .display-3 {
+    margin-top: 4rem;
+  }
 }
