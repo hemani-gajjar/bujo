@@ -1,0 +1,36 @@
+<%- include('partials/composeHeader.ejs') %>
+
+<div class="compose-container">
+  <h1>Add a new Entry</h1>
+  <div class="compose-form-container">
+    <form
+      action="/lists/<%= listName %>/compose"
+      method="POST"
+      class="compose-form"
+    >
+      <div>
+        <h4>Title</h4>
+        <input
+          type="text"
+          name="entryTitle"
+          class="form-control"
+          required
+          oninvalid="this.setCustomValidity('Add a Title')"
+          oninput="this.setCustomValidity('')"
+        />
+      </div>
+      <div>
+        <h4>Content</h4>
+        <textarea
+          name="entryContent"
+          rows="5"
+          cols="40"
+          class="form-control"
+        ></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary compose-btn">Add</button>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer.ejs') %>
