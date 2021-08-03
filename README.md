@@ -14,7 +14,7 @@
 
 ## About The Project
 
-<p>Bujo is a web interface for online Journaling and note-taking </p>
+<p>Bujo is a web interface for online Journaling and Note-taking. </p>
 Project Repository Link: https://github.com/hemani-gajjar/bujo
 
 <!-- USAGE EXAMPLES -->
@@ -36,7 +36,7 @@ Project Repository Link: https://github.com/hemani-gajjar/bujo
 
 - [Heroku](https://www.heroku.com/home)
 
-## Acknowledgements
+### Acknowledgements
 
 - [Passport.js](http://www.passportjs.org/)
 - [Font Awesome](https://fontawesome.com/)
