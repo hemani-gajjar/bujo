@@ -14,7 +14,7 @@
 
 ## About The Project
 
-<br/>
+<p>Bujo is a web interface for online Journaling and note-taking </p>
 Project Repository Link: https://github.com/hemani-gajjar/bujo
 <br/>
 
@@ -23,10 +23,10 @@ Project Repository Link: https://github.com/hemani-gajjar/bujo
 ## Usage
 
 <br/>
-1. Register / Login or Sign Up with Google.
-2. Add new lists.
-3. Add multiple entires in any of the lists.
-4. Get your data saved on the cloud.
+1. Register / Login or Sign Up with Google.<br/>
+2. Add new lists.<br/>
+3. Add multiple entires in any of the lists.<br/>
+4. Get your data saved on the cloud.<br/>
 <br/>
 <br/>
 
