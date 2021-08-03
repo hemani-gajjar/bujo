@@ -1,8 +1,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <h3 align="center">Bujo</h3>
-  <p align="center">
+  <h1>Bujo</h1>
+  <p>
    An online bullet Journal with all the user data backed up on cloud.
     <br />
     <a href="https://bujo0208.herokuapp.com/"><strong>View Live »</strong></a>
@@ -10,22 +10,6 @@
     <br />
   </p>
 </p>
-
-<!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
-  </ol>
-</details>
 
 <!-- ABOUT THE PROJECT -->
 
