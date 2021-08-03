@@ -68,7 +68,7 @@ const List = mongoose.model("List", listSchema);
 //userSchema - for user database
 const userSchema = new mongoose.Schema({
   name: String,
-  email: String,
+  username: String,
   password: String,
   googleId: String,
   userlists: [listSchema],
@@ -116,7 +116,7 @@ passport.use(
         if (!user) {
           user = new User({
             name: profile.displayName,
-            email: profile.emails[0].value,
+            username: profile.emails[0].value,
             //now in the future searching on User.findOne({googleId: profile.id } will match because of this next line
             googleId: profile._json.sub,
           });
