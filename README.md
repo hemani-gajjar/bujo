@@ -5,8 +5,6 @@
    A Web-Based Bullet Journal.
     <br />
     <a href="https://bujo0208.herokuapp.com/"><strong>View Live »</strong></a>
-    <br />
-    <br />
   </p>
 </p>
 
