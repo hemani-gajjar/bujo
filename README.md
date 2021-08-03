@@ -1,4 +1,3 @@
-<!-- PROJECT LOGO -->
 <br />
 <p align="center">
   <h1>Bujo</h1>
@@ -18,18 +17,6 @@
 <br/>
 Project Repository Link: https://github.com/hemani-gajjar/bujo
 <br/>
-<br/>
-<!-- <img src="public/homepage.png" alt="Logo" width="1000" height="580"> -->
-
-### Built With
-
-- [EJS](https://ejs.co/)
-- [Node.js](https://nodejs.dev/)
-- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-
-### Deployed using
-
-- [Heroku](https://firebase.google.com/products/hosting)
 
 <!-- USAGE EXAMPLES -->
 
@@ -43,7 +30,15 @@ Project Repository Link: https://github.com/hemani-gajjar/bujo
 <br/>
 <br/>
 
-<!-- ACKNOWLEDGEMENTS -->
+### Built With
+
+- [EJS](https://ejs.co/)
+- [Node.js](https://nodejs.dev/)
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+
+### Deployed using
+
+- [Heroku](https://firebase.google.com/products/hosting)
 
 ## Acknowledgements
 
