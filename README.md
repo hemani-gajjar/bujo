@@ -27,8 +27,6 @@ Project Repository Link: https://github.com/hemani-gajjar/bujo
 2. Add new lists.<br/>
 3. Add multiple entires in any of the lists.<br/>
 4. Get your data saved on the cloud.<br/>
-<br/>
-<br/>
 
 ### Built With
 
