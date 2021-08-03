@@ -102,22 +102,17 @@ passport.use(
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     function (accessToken, refreshToken, profile, cb) {
-      // console.log("profile: " + JSON.stringify(profile));
-
-      //find users collection for anyone with a googleid of profile.id
       User.findOne({ googleId: profile.id }, function (err, user) {
         if (err) {
           console.log(err);
           return cb(err);
         } else {
-          // console.log("found user: " + user);
         }
-        //No user found so create a new user with values from Google
+        //No user found, create a new user with values from Google
         if (!user) {
           user = new User({
             name: profile.displayName,
             username: profile.emails[0].value,
-            //now in the future searching on User.findOne({googleId: profile.id } will match because of this next line
             googleId: profile._json.sub,
           });
 
@@ -154,18 +149,15 @@ app.get(
     failureRedirect: "/login",
   }),
   function (req, res) {
-    // console.log(util.inspect(res, { depth: null }));
-    // console.log(util.inspect(req, { showHidden: false, depth: null }));
-    // req.user
-    // console.log("REQUEST: " + req.user);
     let userId = req.user._id;
+
     // Successful authentication, redirect user home.
     res.redirect(`/${userId}/home`);
-    // res.send(util.inspect(req, { showHidden: false, depth: null }));
   }
 );
 
-//-------------------------register---------------------------------
+//-------------------------Register---------------------------------
+
 app
   .route("/register")
 
@@ -200,7 +192,8 @@ app
     );
   });
 
-//----------------------------login------------------------------
+//----------------------------Login------------------------------
+
 app
   .route("/login")
   .get(function (req, res) {
@@ -249,12 +242,6 @@ app.get("/:userId/home", function (req, res) {
         });
       }
     });
-    //all lists
-    // List.find({}, function (err, allLists) {
-    //   // if (!err) {
-    //   //   res.render("home", { listArray: allLists });
-    //   // }
-    // });
   } else {
     res.redirect("/login");
   }
@@ -317,12 +304,7 @@ app.get("/:userId/lists/:listName/:entryID", function (req, res) {
         }
       }
 
-      // console.log(listIdx);
-
       let entriesArray = foundUser.userlists[listIdx].entries;
-      // console.log(entriesArray.length);
-      // console.log(foundUser.userlists[listIdx].entries[0]._id);
-      // console.log(requestedEntryId);
 
       for (let i = 0; i < entriesArray.length; i++) {
         if (foundUser.userlists[listIdx].entries[i]._id == requestedEntryId) {
@@ -390,14 +372,6 @@ app.post("/:userId/new-list", function (req, res) {
       }
     }
   );
-
-  //save the item in the database
-  //redirect only after the newList is saved without any errors
-  // newList.save(function (err) {
-  //   if (!err) {
-  //     res.redirect("/home");
-  //   }
-  // });
 });
 
 app.post("/:userId/delete", function (req, res) {
@@ -413,14 +387,6 @@ app.post("/:userId/delete", function (req, res) {
       }
     }
   );
-
-  // List.findByIdAndRemove(deleteButtonId, function (err) {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     res.redirect("/home");
-  //   }
-  // });
 });
 
 app.post("/:userId/lists/:listName/delete", function (req, res) {
@@ -438,19 +404,6 @@ app.post("/:userId/lists/:listName/delete", function (req, res) {
       }
     }
   );
-
-  // List.findOneAndUpdate(
-  //   { name: requestedListName },
-  //   { $pull: { entries: { _id: listDeleteButtonId } } },
-  //   { safe: true, upsert: true },
-  //   function (err) {
-  //     if (!err) {
-  //       res.redirect(`/lists/${requestedListName}`);
-  //     } else {
-  //       console.log(err);
-  //     }
-  //   }
-  // );
 });
 
 let port = process.env.PORT;
