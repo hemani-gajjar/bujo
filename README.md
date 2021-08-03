@@ -2,7 +2,7 @@
 <p align="center">
   <h1>Bujo</h1>
   <p>
-   An online bullet Journal with all the user data backed up on cloud.
+   A Web-Based Bullet Journal.
     <br />
     <a href="https://bujo0208.herokuapp.com/"><strong>View Live »</strong></a>
     <br />
