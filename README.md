@@ -16,13 +16,11 @@
 
 <p>Bujo is a web interface for online Journaling and note-taking </p>
 Project Repository Link: https://github.com/hemani-gajjar/bujo
-<br/>
 
 <!-- USAGE EXAMPLES -->
 
 ## Usage
 
-<br/>
 1. Register / Login or Sign Up with Google.<br/>
 2. Add new lists.<br/>
 3. Add multiple entires in any of the lists.<br/>
@@ -36,7 +34,7 @@ Project Repository Link: https://github.com/hemani-gajjar/bujo
 
 ### Deployed using
 
-- [Heroku](https://firebase.google.com/products/hosting)
+- [Heroku](https://www.heroku.com/home)
 
 ## Acknowledgements
 
