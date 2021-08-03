@@ -1,4 +1,3 @@
-<br />
 <p align="center">
   <h1>Bujo</h1>
   <p>
