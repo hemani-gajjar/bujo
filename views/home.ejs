@@ -11,10 +11,10 @@
 
 <div class="main-container">
   <% listArray.forEach(function(list){ %>
-    <a href="/lists/<%= list.name %>">
+    <a href="/<%= userId %>/lists/<%= list.name %>">
       <div class="list-name">
         <h1><%= list.name %></h1>
-        <form action="/delete" method="POST">
+        <form action="/<%= userId %>/delete" method="POST">
           <button type="submit" name="deleteButton" value="<%= list._id %>" class="delButton"><i class="far fa-trash-alt"></i></button>
         </form>
         <!-- opt2 for button -->

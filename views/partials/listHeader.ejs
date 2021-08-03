@@ -16,12 +16,12 @@
     <nav class="navbar">
       <div class="navbar-container">
         <div>
-          <a href="/"><p class="navbar-brand">daily journal</p></a>
+          <a href="/<%= userId %>/home"><p class="navbar-brand">daily journal</p></a>
         </div>
         <ul>
-          <li><a href="/home">Home</a></li>
+          <li><a href="/<%= userId %>/home">Home</a></li>
           <li>
-            <a href="/lists/<%= listName %>/compose">New Entry</a>
+            <a href="/<%= userId %>/lists/<%= listName %>/compose">New Entry</a>
           </li>
         <li>
           <a href="/logout">Log Out</a>

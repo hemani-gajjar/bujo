@@ -10,6 +10,7 @@ const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const findOrCreate = require("mongoose-findorcreate");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const util = require("util");
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(
     extended: true,
   })
 );
+app.use(express.json());
 
 app.use(
   session({
@@ -45,11 +47,31 @@ mongoose.connect(
 mongoose.set("useCreateIndex", true);
 mongoose.set("useFindAndModify", false);
 
+//defining a mongoose Schema for individual entries
+const entrySchema = {
+  title: String,
+  content: String,
+};
+
+//Mongoose model based on the entrySchema
+const Entry = mongoose.model("Entry", entrySchema);
+
+//defining a mongoose Schema for the lists
+const listSchema = {
+  name: String,
+  entries: [entrySchema],
+};
+
+//Mongoose model based on the listSchema
+const List = mongoose.model("List", listSchema);
+
 //userSchema - for user database
 const userSchema = new mongoose.Schema({
+  name: String,
   email: String,
   password: String,
   googleId: String,
+  userlists: [listSchema],
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -76,34 +98,45 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "https://bujo0208.herokuapp.com/auth/google/bujo",
+      callbackURL: "http://localhost:3000/auth/google/bujo",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     function (accessToken, refreshToken, profile, cb) {
-      User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        return cb(err, user);
+      // console.log("profile: " + JSON.stringify(profile));
+
+      //find users collection for anyone with a googleid of profile.id
+      User.findOne({ googleId: profile.id }, function (err, user) {
+        if (err) {
+          console.log(err);
+          return cb(err);
+        } else {
+          // console.log("found user: " + user);
+        }
+        //No user found so create a new user with values from Google
+        if (!user) {
+          user = new User({
+            name: profile.displayName,
+            email: profile.emails[0].value,
+            //now in the future searching on User.findOne({googleId: profile.id } will match because of this next line
+            googleId: profile._json.sub,
+          });
+
+          user.save(function (err) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("saved successfully");
+              return cb(err, user);
+            }
+          });
+        } else {
+          //return found user
+          return cb(err, user);
+        }
       });
     }
   )
 );
-
-//defining a mongoose Schema for individual entries
-const entrySchema = {
-  title: String,
-  content: String,
-};
-
-//Mongoose model based on the entrySchema
-const Entry = mongoose.model("Entry", entrySchema);
-
-//defining a mongoose Schema for the lists
-const listSchema = {
-  name: String,
-  entries: [entrySchema],
-};
-
-//Mongoose model based on the listSchema
-const List = mongoose.model("List", listSchema);
 
 app.get("/", function (req, res) {
   res.render("first");
@@ -111,15 +144,24 @@ app.get("/", function (req, res) {
 
 app.get(
   "/auth/google",
-  passport.authenticate("google", { scope: ["profile"] })
+  passport.authenticate("google", { scope: ["email", "profile"] })
 );
 
 app.get(
   "/auth/google/bujo",
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  passport.authenticate("google", {
+    // successRedirect: "/auth/google/success",
+    failureRedirect: "/login",
+  }),
   function (req, res) {
-    // Successful authentication, redirect home.
-    res.redirect("/home");
+    // console.log(util.inspect(res, { depth: null }));
+    // console.log(util.inspect(req, { showHidden: false, depth: null }));
+    // req.user
+    // console.log("REQUEST: " + req.user);
+    let userId = req.user._id;
+    // Successful authentication, redirect user home.
+    res.redirect(`/${userId}/home`);
+    // res.send(util.inspect(req, { showHidden: false, depth: null }));
   }
 );
 
@@ -128,12 +170,15 @@ app
   .route("/register")
 
   .get(function (req, res) {
+    // console.log(userId);
     res.render("register");
   })
 
   .post(function (req, res) {
+    console.log(req.body);
+
     User.register(
-      { username: req.body.username },
+      { name: req.body.name, username: req.body.username },
       req.body.password,
       function (err, user) {
         if (err) {
@@ -141,7 +186,14 @@ app
           res.redirect("/register");
         } else {
           passport.authenticate("local")(req, res, function () {
-            res.redirect("/home");
+            User.findOne(
+              { username: req.body.username },
+              function (err, foundUser) {
+                if (!err) {
+                  res.redirect(`/${foundUser._id}/home`);
+                }
+              }
+            );
           });
         }
       }
@@ -165,77 +217,125 @@ app
         console.log(err);
       } else {
         passport.authenticate("local")(req, res, function () {
-          res.redirect("/home");
+          User.findOne(
+            { username: req.body.username },
+            function (err, foundUser) {
+              if (!err) {
+                res.redirect(`/${foundUser._id}/home`);
+              }
+            }
+          );
         });
       }
     });
   });
+
 //-----------------------------------------------------------------
+
 app.get("/logout", function (req, res) {
   req.logout();
   res.redirect("/");
 });
 
-app.get("/home", function (req, res) {
+app.get("/:userId/home", function (req, res) {
+  const requestedUserId = req.params.userId;
   if (req.isAuthenticated()) {
-    List.find({}, function (err, allLists) {
+    User.findOne({ _id: requestedUserId }, function (err, foundUser) {
       if (!err) {
-        res.render("home", { listArray: allLists });
+        res.render("home", {
+          listArray: foundUser.userlists,
+          userId: requestedUserId,
+        });
       }
     });
+    //all lists
+    // List.find({}, function (err, allLists) {
+    //   // if (!err) {
+    //   //   res.render("home", { listArray: allLists });
+    //   // }
+    // });
   } else {
     res.redirect("/login");
   }
 });
 
-app.get("/new-list", function (req, res) {
-  res.render("new-list");
+app.get("/:userId/new-list", function (req, res) {
+  const requestedUserId = req.params.userId;
+  res.render("new-list", { userId: requestedUserId });
 });
 
 //dynamic URL
-app.get("/lists/:listName", function (req, res) {
+app.get("/:userId/lists/:listName", function (req, res) {
   const requestedListName = req.params.listName;
+  const requestedUserId = req.params.userId;
   if (requestedListName !== "favicon.ico") {
-    List.findOne({ name: requestedListName }, function (err, foundList) {
+    User.findOne({ _id: requestedUserId }, function (err, foundUser) {
       if (!err) {
-        res.render("list", {
-          foundList: foundList,
-          listName: requestedListName,
-        });
+        let len = foundUser.userlists.length;
+        for (let i = 0; i < len; i++) {
+          if (foundUser.userlists[i].name === requestedListName) {
+            res.render("list", {
+              foundList: foundUser.userlists[i],
+              listName: requestedListName,
+              userId: requestedUserId,
+            });
+          }
+        }
       }
     });
   }
 });
 
-app.get("/lists/:listName/compose", function (req, res) {
+app.get("/:userId/lists/:listName/compose", function (req, res) {
   const requestedListName = req.params.listName;
+  const requestedUserId = req.params.userId;
 
-  List.findOne({ name: requestedListName }, function (err, foundList) {
+  User.findOne({ _id: requestedUserId }, function (err, foundUser) {
     if (!err) {
-      res.render("compose", { listName: requestedListName });
+      res.render("compose", {
+        userId: requestedUserId,
+        listName: requestedListName,
+      });
     }
   });
 });
 
-app.get("/lists/:listName/:entryID", function (req, res) {
+app.get("/:userId/lists/:listName/:entryID", function (req, res) {
   if (req.isAuthenticated()) {
     const requestedListName = req.params.listName;
     const requestedEntryId = req.params.entryID;
+    const requestedUserId = req.params.userId;
 
-    List.findOne({ name: requestedListName }, function (err, foundList) {
+    User.findOne({ _id: requestedUserId }, function (err, foundUser) {
       let displayTitle = "";
       let displayContent = "";
-      for (let i = 0; i < foundList.entries.length; i++) {
-        if (foundList.entries[i]._id == requestedEntryId) {
-          displayTitle = foundList.entries[i].title;
-          displayContent = foundList.entries[i].content;
+      let listIdx = 0;
+      for (let i = 0; i < foundUser.userlists.length; i++) {
+        if (foundUser.userlists[i].name === requestedListName) {
+          listIdx = i;
         }
       }
+
+      // console.log(listIdx);
+
+      let entriesArray = foundUser.userlists[listIdx].entries;
+      // console.log(entriesArray.length);
+      // console.log(foundUser.userlists[listIdx].entries[0]._id);
+      // console.log(requestedEntryId);
+
+      for (let i = 0; i < entriesArray.length; i++) {
+        if (foundUser.userlists[listIdx].entries[i]._id == requestedEntryId) {
+          displayTitle = entriesArray[i].title;
+          displayContent = entriesArray[i].content;
+        }
+      }
+
       if (!err) {
         res.render("entry", {
           listName: requestedListName,
           entryTitle: displayTitle,
           entryContent: displayContent,
+          userId: requestedUserId,
         });
       }
     });
@@ -244,8 +344,9 @@ app.get("/lists/:listName/:entryID", function (req, res) {
   }
 });
 
-app.post("/lists/:listName/compose", function (req, res) {
+app.post("/:userId/lists/:listName/compose", function (req, res) {
   const requestedListName = req.params.listName;
+  const requestedUserId = req.params.userId;
 
   //newEntry
   const newEntry = new Entry({
@@ -253,12 +354,13 @@ app.post("/lists/:listName/compose", function (req, res) {
     content: req.body.entryContent,
   });
 
-  List.findOneAndUpdate(
-    { name: requestedListName },
-    { $push: { entries: newEntry } },
+  User.findOneAndUpdate(
+    { _id: requestedUserId },
+    { $push: { "userlists.$[idx].entries": newEntry } },
+    { arrayFilters: [{ "idx.name": requestedListName }] },
     function (err) {
       if (!err) {
-        res.redirect(`/lists/${requestedListName}`);
+        res.redirect(`/${requestedUserId}/lists/${requestedListName}`);
       } else {
         console.log(err);
       }
@@ -266,49 +368,88 @@ app.post("/lists/:listName/compose", function (req, res) {
   );
 });
 
-app.post("/new-list", function (req, res) {
+app.post("/:userId/new-list", function (req, res) {
+  const requestedUserId = req.params.userId;
+
   //newList item
   const newList = new List({
     name: req.body.listName,
   });
 
-  //save the item in the database
-  //redirect only after the newList is saved without any errors
-  newList.save(function (err) {
-    if (!err) {
-      res.redirect("/home");
-    }
-  });
-});
-
-app.post("/delete", function (req, res) {
-  const deleteButtonId = req.body.deleteButton;
-
-  List.findByIdAndRemove(deleteButtonId, function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.redirect("/home");
-    }
-  });
-});
-
-app.post("/lists/:listName/delete", function (req, res) {
-  const listDeleteButtonId = req.body.listDeleteButton;
-  const requestedListName = req.params.listName;
-
-  List.findOneAndUpdate(
-    { name: requestedListName },
-    { $pull: { entries: { _id: listDeleteButtonId } } },
-    { safe: true, upsert: true },
+  User.findOneAndUpdate(
+    {
+      _id: requestedUserId,
+    },
+    { $push: { userlists: newList } },
     function (err) {
       if (!err) {
-        res.redirect(`/lists/${requestedListName}`);
+        res.redirect(`/${requestedUserId}/home`);
       } else {
         console.log(err);
       }
     }
   );
+
+  //save the item in the database
+  //redirect only after the newList is saved without any errors
+  // newList.save(function (err) {
+  //   if (!err) {
+  //     res.redirect("/home");
+  //   }
+  // });
+});
+
+app.post("/:userId/delete", function (req, res) {
+  const requestedUserId = req.params.userId;
+  const deleteButtonId = req.body.deleteButton;
+
+  User.findOneAndUpdate(
+    { _id: requestedUserId },
+    { $pull: { userlists: { _id: deleteButtonId } } },
+    function (err) {
+      if (!err) {
+        res.redirect(`/${requestedUserId}/home`);
+      }
+    }
+  );
+
+  // List.findByIdAndRemove(deleteButtonId, function (err) {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     res.redirect("/home");
+  //   }
+  // });
+});
+
+app.post("/:userId/lists/:listName/delete", function (req, res) {
+  const listDeleteButtonId = req.body.listDeleteButton;
+  const requestedListName = req.params.listName;
+  const requestedUserId = req.params.userId;
+
+  User.findOneAndUpdate(
+    { _id: requestedUserId },
+    { $pull: { "userlists.$[idx].entries": { _id: listDeleteButtonId } } },
+    { arrayFilters: [{ "idx.name": requestedListName }] },
+    function (err) {
+      if (!err) {
+        res.redirect(`/${requestedUserId}/lists/${requestedListName}`);
+      }
+    }
+  );
+
+  // List.findOneAndUpdate(
+  //   { name: requestedListName },
+  //   { $pull: { entries: { _id: listDeleteButtonId } } },
+  //   { safe: true, upsert: true },
+  //   function (err) {
+  //     if (!err) {
+  //       res.redirect(`/lists/${requestedListName}`);
+  //     } else {
+  //       console.log(err);
+  //     }
+  //   }
+  // );
 });
 
 let port = process.env.PORT;
