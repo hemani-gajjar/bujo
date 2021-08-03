@@ -245,6 +245,7 @@ app.get("/:userId/home", function (req, res) {
         res.render("home", {
           listArray: foundUser.userlists,
           userId: requestedUserId,
+          userName: foundUser.name,
         });
       }
     });
