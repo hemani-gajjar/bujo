@@ -11,7 +11,7 @@
 
 ## About The Project
 
-<p>Bujo is a responsive web interface for online Journaling and Note-taking that will help you keep track of everything in your busy life.
+<p>Bujo is a responsive web interface for online Journaling and Note-taking that will help you keep track of everything.
   Cookies & Sessions have been used to store information along with a OAuth 2.0 authorization framework to safely sign in with your Google account.</p>
 Project Repository Link: https://github.com/hemani-gajjar/bujo
 
